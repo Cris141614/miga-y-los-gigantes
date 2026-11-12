@@ -1,0 +1,17 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Blender: copias de respaldo automaticas
+*.blend1
+*.blend2
+
+# Obsidian: estado local de la interfaz
+docs/.obsidian/workspace*.json
+docs/.obsidian/cache
+docs/.trash/
+
+# Temporales
+*.tmp
+*.bak
