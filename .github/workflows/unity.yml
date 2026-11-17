@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Solo se baja LFS de juego/: los .blend y las referencias gastarian la cuota gratis de LFS
       - name: Lista de archivos LFS
