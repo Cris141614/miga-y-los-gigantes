@@ -1,0 +1,15 @@
+# Categorias de las notas que genera GitHub con "Generate release notes" o --generate-notes
+changelog:
+  exclude:
+    labels: [descartado]
+  categories:
+    - title: Novedades
+      labels: [feat]
+    - title: Correcciones
+      labels: [fix]
+    - title: Arte
+      labels: [art]
+    - title: Rendimiento
+      labels: [perf]
+    - title: Otros cambios
+      labels: ['*']

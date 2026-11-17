@@ -1,0 +1,35 @@
+name: Error
+description: Algo del juego no funciona como debería
+labels: [fix]
+body:
+  - type: textarea
+    id: que-pasa
+    attributes:
+      label: Qué pasa
+      description: Qué ocurre y dónde (zona o escena)
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducir
+      value: |
+        1. 
+        2. 
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Qué debería pasar
+    validations:
+      required: true
+  - type: input
+    id: sentry
+    attributes:
+      label: Enlace al error en Sentry
+  - type: input
+    id: version
+    attributes:
+      label: Versión o commit
+      placeholder: v0.1.0 o 1af6e8f

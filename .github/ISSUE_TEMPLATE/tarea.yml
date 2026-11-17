@@ -1,0 +1,23 @@
+name: Tarea
+description: Funcionalidad, arte, sonido, documentación o infraestructura
+body:
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Qué hay que hacer y por qué
+    validations:
+      required: true
+  - type: input
+    id: nota
+    attributes:
+      label: Nota de la bóveda
+      description: Nota de docs/ donde está el diseño
+      placeholder: docs/Juego/Mecanicas.md
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      value: |
+        - [ ] 
+    validations:
+      required: true

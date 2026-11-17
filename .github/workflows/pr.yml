@@ -1,0 +1,35 @@
+name: PR
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  titulo-pr:
+    name: Titulo del PR
+    runs-on: ubuntu-latest
+    steps:
+      # Con squash merge el titulo del PR es el commit que entra en develop
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            art
+            docs
+            perf
+            refactor
+            style
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: 'La descripcion del titulo debe empezar en minuscula: "feat: agrega el hilo rojo".'
