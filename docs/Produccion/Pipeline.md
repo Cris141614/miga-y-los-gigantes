@@ -10,7 +10,9 @@ Cómo pasa algo de idea a estar dentro del juego.
 5. **Registrar** en [[Inventario]].
 
 ## Usar las hojas de vistas en Blender
-- Como imagen de referencia: `Add > Image > Reference`, una por vista (frente con `1`, lado con `3`, espalda con `Ctrl+1`).
+- `miga.blend` y `costurera.blend` ya traen las tres vistas en la colección `Referencias`, con el piso en el origen y a la escala del juego. Se ven en vista ortográfica: frente con `1`, lado con `Ctrl+3`, espalda con `Ctrl+1`.
+- Para cargarlas en otro personaje: recortar sus vistas en `arte-fuente/blender/personajes/<personaje>/referencias/` (`<personaje>-frente.png`, `-lado.png`, `-espalda.png`), agregar sus medidas a `HOJAS` en `arte-fuente/blender/referencias.py` y, con su `.blend` abierto, correr en la pestaña Scripting: `exec(open(bpy.path.abspath("//../../referencias.py"), encoding="utf-8").read()); cargar("<personaje>")`.
+- A mano: `Add > Image > Reference`, una por vista.
 - Como dibujo 2D editable: `File > Import > Scalable Vector Graphics (.svg)`. Las formas entran como curvas.
 - Alinear siempre la línea de piso con el origen.
 
