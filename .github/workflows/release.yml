@@ -15,7 +15,7 @@ jobs:
     env:
       TAG: ${{ github.event.release.tag_name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Lista de archivos LFS
         run: git lfs ls-files -l --include "juego/**" | cut -d' ' -f1 | sort > .lfs-assets-id
