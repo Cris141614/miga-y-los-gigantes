@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    name: Build de Windows
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lista de archivos LFS
+        run: git lfs ls-files -l --include "juego/**" | cut -d' ' -f1 | sort > .lfs-assets-id
+      - uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: lfs-${{ hashFiles('.lfs-assets-id') }}
+      - run: git lfs pull --include "juego/**"
+
+      - uses: actions/cache@v4
+        with:
+          path: juego/Library
+          key: Library-${{ hashFiles('juego/Assets/**', 'juego/Packages/**', 'juego/ProjectSettings/**') }}
+          restore-keys: Library-
+
+      - name: Version sin la v
+        run: echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
+
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: juego
+          targetPlatform: StandaloneWindows64
+          buildName: MigaYLosGigantes
+          versioning: Custom
+          version: ${{ env.VERSION }}
+
+      - name: Subir el zip a la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ZIP="$GITHUB_WORKSPACE/MigaYLosGigantes-$TAG-windows.zip"
+          (cd build/StandaloneWindows64 && zip -qr "$ZIP" .)
+          gh release upload "$TAG" "$ZIP" --clobber --repo "$GITHUB_REPOSITORY"

@@ -23,8 +23,10 @@ Las notas de esta bóveda son la excepción: llevan nombre legible.
 - Carpetas por sistema: `Jugador/`, `Criaturas/`, `Sistemas/`, `Camara/`, `UI/`.
 
 ## Git
-- Ramas: `main` (estable), `develop` (trabajo), y una rama por tarea: `feat/hilo-rojo`.
-- Commits con Conventional Commits: `feat:`, `fix:`, `docs:`, `chore:`, `art:`.
+- Ramas: `main` (estable), `develop` (trabajo), y una rama por issue con tipo y número: `feat/13-hilo-rojo`.
+- Commits con Conventional Commits, en imperativo y minúscula: `feat:`, `fix:`, `art:`, `docs:`, `build:`, `ci:`, `chore:`, `refactor:`, `perf:`, `test:`.
+- El título del PR sigue el mismo formato: con squash se convierte en el commit de `develop`.
+- El paso a paso completo está en [[Flujo de trabajo]].
 - Un commit por cambio con sentido; nunca subir la carpeta `Library/`.
 
 ## Bóveda
