@@ -15,7 +15,8 @@
 - Una nota por tema. Si ya existe, editarla; no duplicar.
 - Toda nota nueva va en su carpeta, enlaza al menos a una nota existente y se enlaza desde su nota padre o desde `00-Inicio`. Una nota sin enlaces queda huérfana en el grafo.
 - Las decisiones se escriben en la nota del tema con fecha (AAAA-MM-DD).
-- Tareas en `Produccion/Tareas.md`. Assets nuevos en `Produccion/Inventario.md`.
+- Las tareas son issues de GitHub (revisarlas con `gh issue list`, solo lectura). Assets nuevos en `Produccion/Inventario.md`.
+- Flujo de ramas, PR y releases: `Produccion/Flujo de trabajo.md`.
 - Nombres de archivos, scripts y ramas según `Produccion/Convenciones.md`.
 
 ## Git y GitHub
