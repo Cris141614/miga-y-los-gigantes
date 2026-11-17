@@ -49,7 +49,7 @@ Cada milestone es una versión (`v0.1.0 - Bloques grises`). Mientras la versión
 | Herramienta | Qué hace | Dónde se configura |
 |---|---|---|
 | GitHub Actions | Valida títulos de PR, compila y prueba Unity, hace el build de cada release | `.github/workflows/` |
-| Sentry | Reporta los errores del juego mientras alguien juega | En Unity: `Tools > Sentry`. Opciones en `Assets/Resources/Sentry/` |
+| Sentry | Reporta los errores del juego mientras alguien juega | Proyecto `miga-y-los-gigantes` en la organización `nova-sf` de sentry.io. En Unity: `Tools > Sentry`, opciones en `Assets/Resources/Sentry/` |
 | GitGuardian | Avisa si se sube una contraseña o token | App de GitHub instalada en el repo |
 | Dependabot | Propone actualizar las acciones de GitHub cada mes | `.github/dependabot.yml` |
 | GitHub Projects | Tablero con todas las issues | Proyecto **Miga y los Gigantes** |
@@ -63,10 +63,11 @@ En el repo: **Settings > Secrets and variables > Actions**.
 | `UNITY_EMAIL` | Correo de la cuenta de Unity |
 | `UNITY_PASSWORD` | Contraseña de la cuenta de Unity |
 
-El token de Sentry nunca va al repositorio: `SentryCliOptions.asset` está en el `.gitignore`.
+El token de Sentry nunca va al repositorio: la carpeta `Assets/Plugins/Sentry/` (donde Unity guarda `SentryCliOptions.asset`) está en el `.gitignore`. El DSN sí se sube: solo dice a dónde mandar los errores.
 
 ## Decisiones
 - 2026-11-12: las tareas se llevan como issues en GitHub; la bóveda guarda diseño y decisiones.
 - 2026-11-12: squash al fusionar en `develop`, merge commit al pasar a `main`.
 - 2026-11-12: versiones `0.x` como pre-release hasta que el Nivel 1 esté completo.
 - 2026-11-12: CI solo baja de LFS los archivos de `juego/`, para no gastar la cuota gratis.
+- 2026-11-16: Sentry captura también los errores del editor (`Capture In Editor`). Los PR de Dependabot necesitan sus propios secretos de Unity (`gh secret set ... --app dependabot`).
