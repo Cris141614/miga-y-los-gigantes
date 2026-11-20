@@ -53,6 +53,8 @@ Calma (1) → tensión baja (2) → respiro con truco (3) → miedo (4) → deci
 ## Final del nivel
 Miga cae del otro lado de la pared, sola y a oscuras. Chispa vuelve a brillar. A lo lejos se oye otro cuarto.
 
+Este es el final de la rebanada jugable (fase 1). En el capítulo 1 completo el taller tiene más zonas, y antes de escapar Miga derrota a La Costurera, de una forma **por definir**. Ver [[Vision]].
+
 ## Qué se necesita construir
 La lista completa con estados está en [[Inventario]].
 
