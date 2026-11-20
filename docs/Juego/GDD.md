@@ -2,6 +2,7 @@
 
 ## Concepto
 Juego 3D de suspenso con cámara lateral. Una niña pequeña cruza los cuartos de una casa de gigantes. Sin diálogo y sin texto.
+Referencia: *Little Nightmares*. La cámara mira de lado, pero Miga también se mueve en profundidad, en un mundo lineal pero semiabierto. El rumbo completo está en [[Vision]].
 
 ## Pilares
 1. **Soy pequeña.** Todo lo cotidiano es enorme y peligroso.
@@ -9,7 +10,7 @@ Juego 3D de suspenso con cámara lateral. Una niña pequeña cruza los cuartos d
 3. **Se entiende sin palabras.**
 
 ## Alcance de la primera versión
-Un solo nivel jugable de 5 a 8 minutos: [[Nivel 1 - El Taller]], con [[La Costurera]].
+Fase 1 de la [[Vision]]: una rebanada jugable de unos 10 minutos, las 6 zonas de [[Nivel 1 - El Taller]] con [[La Costurera]], con movimiento en profundidad.
 No se empieza otro nivel hasta que este se pueda jugar de principio a fin.
 
 ## Cámara

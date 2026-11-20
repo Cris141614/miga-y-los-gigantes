@@ -35,7 +35,7 @@ No hay diálogo ni texto en pantalla. Todo se cuenta con lo que se ve: frascos c
 
 ## Lo que todavía no se sabe
 Por qué los Guardadores son gigantes, y qué es en realidad la Casa Grande, queda abierto a propósito. Cuando se defina, tiene que ser macabro y tenebroso.
-- Ideas para más adelante, sin decidir: personas gigantes, sombras gigantes, cosas que se mueven en el agua.
+- Ideas para más adelante, sin decidir: personas gigantes, sombras gigantes, cosas que se mueven en el agua, rastros de otros niños guardados antes que Miga. Ver las ideas inspiradas en [[Vision]].
 
 ## Decisiones
 - 2026-11-19: Miga deja de ser del tamaño de una taza. Es una niña pequeña y los Guardadores son gigantes de verdad, unas 17 veces más altos que ella. En pantalla no cambia nada: Miga sigue midiendo 1 unidad en Unity y La Costurera 17.
