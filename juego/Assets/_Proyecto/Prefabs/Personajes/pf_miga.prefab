@@ -76,6 +76,7 @@ MonoBehaviour:
   velocidadCorrer: 3.2
   velocidadAgachada: 0.8
   aceleracion: 14
+  tiempoGiro: 0.2
   alturaSalto: 0.45
   gravedad: 20
   tiempoCoyote: 0.1
@@ -86,7 +87,7 @@ MonoBehaviour:
   alturaAgachada: 0.6
   modelo: {fileID: 3737884899067459013}
   entrada:
-    mover: 0
+    mover: {x: 0, y: 0}
     correr: 0
     agachar: 0
 --- !u!114 &6797699993708889086

@@ -18,8 +18,10 @@ namespace Miga.Juego
         {
             control = GetComponent<ControlMiga>();
             mover = new InputAction("Mover", InputActionType.Value);
-            mover.AddCompositeBinding("1DAxis").With("Negative", "<Keyboard>/a").With("Positive", "<Keyboard>/d");
-            mover.AddBinding("<Gamepad>/leftStick/x");
+            mover.AddCompositeBinding("2DVector")   // W y S: hacia el fondo y hacia la cámara
+                .With("Up", "<Keyboard>/w").With("Down", "<Keyboard>/s")
+                .With("Left", "<Keyboard>/a").With("Right", "<Keyboard>/d");
+            mover.AddBinding("<Gamepad>/leftStick");
             correr = Boton("Correr", "<Keyboard>/leftShift", "<Gamepad>/rightTrigger");
             agachar = Boton("Agachar", "<Keyboard>/leftCtrl", "<Gamepad>/buttonEast");
             saltar = Boton("Saltar", "<Keyboard>/space", "<Gamepad>/buttonSouth");
@@ -60,7 +62,7 @@ namespace Miga.Juego
         {
             control.entrada = new ControlMiga.Entrada
             {
-                mover = mover.ReadValue<float>(),
+                mover = mover.ReadValue<Vector2>(),
                 correr = correr.IsPressed(),
                 agachar = agachar.IsPressed(),
             };
