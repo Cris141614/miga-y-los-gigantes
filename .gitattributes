@@ -1,5 +1,9 @@
 * text=auto
 
+# Notas de la bóveda: siempre con saltos de línea LF, como las guarda Obsidian.
+# Si no, Git para Windows las marca como modificadas aunque el texto sea el mismo.
+*.md text eol=lf
+
 # Unity .gitattributes Template
 # Source: https://github.com/gitattributes/gitattributes/blob/master/Unity.gitattributes
 # Last synced: 2026-02-04
