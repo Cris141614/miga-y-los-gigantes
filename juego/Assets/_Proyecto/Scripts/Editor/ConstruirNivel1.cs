@@ -1,3 +1,5 @@
+using Miga.Juego;
+using Unity.Cinemachine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -145,13 +147,61 @@ namespace Miga.Herramientas
             var miga = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
             miga.transform.position = InicioMiga;
 
-            var camara = Camera.main.transform;   // provisional: la cámara de verdad es la #9
-            camara.SetParent(miga.transform, false);
-            camara.localPosition = new Vector3(0f, 1f, -6f);
-            camara.localRotation = Quaternion.identity;
+            ArmarCamaras(miga.transform);
 
             EditorSceneManager.SaveScene(escena, Escena);
             Debug.Log("Nivel 1 construido: " + Escena);
+        }
+
+        // Cámara lateral (#9): una baja que sigue a Miga, y cámaras abiertas que se activan en zonas marcadas.
+        static void ArmarCamaras(Transform miga)
+        {
+            Camera.main.gameObject.AddComponent<CinemachineBrain>();   // mezcla las cámaras en 2 s
+            var padre = new GameObject("Camaras").transform;
+
+            // Baja, a la altura de su pecho y un poco inclinada hacia arriba: todo se ve más grande
+            var sigue = Camara(padre, "Camara_Miga", miga.position + new Vector3(0f, 0.6f, -7f), -6f, 40f);
+            Seguir(sigue, miga, new Vector3(0f, 0.6f, -7f), new Vector3(0.6f, 0.9f, 0f));
+            sigue.gameObject.AddComponent<AsomarCamara>();   // joystick derecho o flechas
+
+            // Al cruzar la regla se ve por primera vez a La Costurera completa, sentada a la máquina
+            var regla = Camara(padre, "Camara_Abierta_Regla", new Vector3(40f, 11f, -45f), 0f, 40f);
+            Zona(padre, "Zona_Camara_Regla", new Vector3(31.75f, 14f, 0f), new Vector3(6.5f, 4f, 2f), regla);
+
+            // En la huida la cámara se aleja y deja a Miga a la derecha, para ver lo que viene detrás
+            var huida = Camara(padre, "Camara_Abierta_Huida", miga.position, -3f, 45f);
+            Seguir(huida, miga, new Vector3(-5f, 3f, -20f), new Vector3(0.4f, 0.6f, 0f));
+            Zona(padre, "Zona_Camara_Huida", new Vector3(115.5f, 3f, 0f), new Vector3(33f, 6f, 2f), huida);
+        }
+
+        static CinemachineCamera Camara(Transform padre, string nombre, Vector3 posicion, float inclinacion, float fov)
+        {
+            var go = new GameObject(nombre);
+            go.transform.SetParent(padre, false);
+            go.transform.SetPositionAndRotation(posicion, Quaternion.Euler(inclinacion, 0f, 0f));
+            var camara = go.AddComponent<CinemachineCamera>();
+            camara.Lens.FieldOfView = fov;
+            return camara;
+        }
+
+        static void Seguir(CinemachineCamera camara, Transform miga, Vector3 distancia, Vector3 suavizado)
+        {
+            camara.Target.TrackingTarget = miga;
+            var seguir = camara.gameObject.AddComponent<CinemachineFollow>();
+            seguir.FollowOffset = distancia;
+            seguir.TrackerSettings.PositionDamping = suavizado;
+        }
+
+        static void Zona(Transform padre, string nombre, Vector3 centro, Vector3 tamano, CinemachineCamera camara)
+        {
+            var go = new GameObject(nombre);
+            go.transform.SetParent(padre, false);
+            go.transform.position = centro;
+            var caja = go.AddComponent<BoxCollider>();
+            caja.isTrigger = true;
+            caja.size = tamano;
+            go.AddComponent<ZonaDeCamara>().camara = camara.gameObject;
+            camara.gameObject.SetActive(false);
         }
 
         // Un material de color por tipo de bloque, en Art/Materiales/Grises. Si ya existe, se reutiliza.

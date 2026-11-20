@@ -1,7 +1,10 @@
 {
     "name": "Miga.Herramientas",
     "rootNamespace": "Miga.Herramientas",
-    "references": [],
+    "references": [
+        "Miga.Juego",
+        "Unity.Cinemachine"
+    ],
     "includePlatforms": [
         "Editor"
     ],
