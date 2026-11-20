@@ -8,6 +8,7 @@ using UnityEngine.TestTools;
 namespace Miga.Pruebas
 {
     // Movimiento de Miga sin teclado: cada prueba llena la entrada como lo haría EntradaMiga.
+    // x de la entrada es izquierda-derecha en pantalla; y es hacia el fondo (z del mundo).
     public class ControlMigaPruebas
     {
         readonly List<GameObject> creados = new List<GameObject>();
@@ -29,10 +30,10 @@ namespace Miga.Pruebas
             return cubo;
         }
 
-        // Un piso con la cara de arriba en y = 0 y Miga parada encima, en x = 0.
+        // Un piso grande con la cara de arriba en y = 0 y Miga parada encima, en el origen.
         ControlMiga CrearMiga()
         {
-            Cubo(new Vector3(0f, -0.5f, 0f), new Vector3(30f, 1f, 4f));
+            Cubo(new Vector3(0f, -0.5f, 0f), new Vector3(30f, 1f, 30f));
             var go = new GameObject("Miga");
             creados.Add(go);
             go.transform.position = new Vector3(0f, 0.05f, 0f);
@@ -43,23 +44,36 @@ namespace Miga.Pruebas
         }
 
         [UnityTest]
-        public IEnumerator CaminaDeLadoSinSalirseDeSuCarril()
+        public IEnumerator CaminaHaciaLaDerecha()
         {
             var miga = CrearMiga();
-            miga.entrada.mover = 1f;
+            miga.entrada.mover = Vector2.right;
 
             yield return new WaitForSeconds(1f);
 
             Assert.That(miga.transform.position.x, Is.InRange(1f, 2f));
-            Assert.That(miga.transform.position.z, Is.EqualTo(0f).Within(0.001f));
+            Assert.That(miga.transform.position.z, Is.EqualTo(0f).Within(0.01f));
             Assert.That(miga.Corriendo, Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator CaminaHaciaElFondoYGiraHaciaAlla()
+        {
+            var miga = CrearMiga();
+            miga.entrada.mover = Vector2.up;
+
+            yield return new WaitForSeconds(1.5f);   // el giro es lento: le da tiempo de terminarlo
+
+            Assert.That(miga.transform.position.z, Is.InRange(1.5f, 3f));
+            Assert.That(miga.transform.position.x, Is.EqualTo(0f).Within(0.01f));
+            Assert.That(Vector3.Angle(miga.Mirando, Vector3.forward), Is.LessThan(2f));
         }
 
         [UnityTest]
         public IEnumerator CorrerEsMasRapidoYSeNota()
         {
             var miga = CrearMiga();
-            miga.entrada = new ControlMiga.Entrada { mover = 1f, correr = true };
+            miga.entrada = new ControlMiga.Entrada { mover = Vector2.right, correr = true };
 
             yield return new WaitForSeconds(1f);
 
@@ -91,7 +105,7 @@ namespace Miga.Pruebas
         {
             var miga = CrearMiga();
             Cubo(new Vector3(3f, 0.4f, 0f), new Vector3(4f, 0.8f, 4f));   // borde de 0.8 m que empieza en x = 1
-            miga.entrada.mover = 1f;
+            miga.entrada.mover = Vector2.right;
             yield return new WaitForSeconds(0.8f);   // camina hasta la pared
 
             miga.Saltar();
@@ -102,11 +116,26 @@ namespace Miga.Pruebas
         }
 
         [UnityTest]
+        public IEnumerator TrepaUnBordeMirandoHaciaElFondo()
+        {
+            var miga = CrearMiga();
+            Cubo(new Vector3(0f, 0.4f, 3f), new Vector3(4f, 0.8f, 4f));   // borde de 0.8 m que empieza en z = 1
+            miga.entrada.mover = Vector2.up;
+            yield return new WaitForSeconds(0.8f);
+
+            miga.Saltar();
+            yield return new WaitForSeconds(1f);
+
+            Assert.That(miga.transform.position.y, Is.EqualTo(0.8f).Within(0.08f));
+            Assert.That(miga.transform.position.z, Is.GreaterThan(1f));
+        }
+
+        [UnityTest]
         public IEnumerator NoTrepaUnaParedMasAltaQueSuAlcance()
         {
             var miga = CrearMiga();
             Cubo(new Vector3(3f, 0.8f, 0f), new Vector3(4f, 1.6f, 4f));   // pared de 1.6 m
-            miga.entrada.mover = 1f;
+            miga.entrada.mover = Vector2.right;
             yield return new WaitForSeconds(0.8f);
 
             miga.Saltar();

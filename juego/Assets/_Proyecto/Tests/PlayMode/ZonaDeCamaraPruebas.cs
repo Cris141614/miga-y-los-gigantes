@@ -45,7 +45,7 @@ namespace Miga.Pruebas
             yield return null;
             Assert.That(camara.activeSelf, Is.False, "Afuera de la zona la cámara abierta está apagada");
 
-            miga.entrada.mover = 1f;
+            miga.entrada.mover = Vector2.right;
             yield return new WaitForSeconds(1f);   // va por x = 1.5
             Assert.That(camara.activeSelf, Is.True, "Dentro de la zona se activa");
 
