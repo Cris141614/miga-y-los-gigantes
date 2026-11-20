@@ -162,5 +162,107 @@ namespace Miga.Pruebas
 
             Assert.That(miga.Agachada, Is.True);
         }
+
+        // Una caja de 0.8 m que se puede empujar, con la cara de la izquierda en x = 0.5, delante de Miga.
+        Empujable Caja()
+        {
+            var caja = Cubo(new Vector3(0.9f, 0.4f, 0f), new Vector3(0.8f, 0.8f, 0.8f)).AddComponent<Empujable>();
+            Physics.SyncTransforms();   // que la física ya la vea en su lugar
+            return caja;
+        }
+
+        // Si una prueba falla, dice dónde quedó Miga
+        static string Donde(ControlMiga miga) =>
+            $"Miga quedó en {miga.transform.position}, en el piso: {miga.EnElPiso}, trepando: {miga.Trepando}";
+
+        // Espera a que toque el piso, camina hasta la caja y la agarra.
+        IEnumerator Agarrar(ControlMiga miga, Empujable caja)
+        {
+            yield return new WaitForSeconds(0.3f);
+            miga.entrada = new ControlMiga.Entrada { mover = Vector2.right, agarrar = true };
+            yield return new WaitForSeconds(0.5f);
+            Assert.That(miga.Agarrado, Is.EqualTo(caja), Donde(miga));
+            miga.entrada.mover = Vector2.zero;
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator EmpujaUnaCajaAgarrandola()
+        {
+            var miga = CrearMiga();
+            var caja = Caja();
+            yield return Agarrar(miga, caja);
+
+            miga.entrada.mover = Vector2.right;
+            yield return new WaitForSeconds(1f);
+
+            Assert.That(miga.Agarrado, Is.EqualTo(caja), Donde(miga));
+            Assert.That(caja.transform.position.x, Is.GreaterThan(1.5f));
+            Assert.That(caja.transform.position.y, Is.EqualTo(0.4f).Within(0.001f));   // se desliza, no se levanta
+            Assert.That(miga.transform.position.x, Is.LessThan(caja.transform.position.x - 0.4f));
+        }
+
+        [UnityTest]
+        public IEnumerator JalaUnaCajaSinDarseVuelta()
+        {
+            var miga = CrearMiga();
+            var caja = Caja();
+            yield return Agarrar(miga, caja);
+            float antes = caja.transform.position.x;
+
+            miga.entrada.mover = Vector2.left;
+            yield return new WaitForSeconds(1f);
+
+            Assert.That(miga.Agarrado, Is.EqualTo(caja), Donde(miga));
+            Assert.That(caja.transform.position.x, Is.LessThan(antes - 0.5f));
+            Assert.That(Vector3.Angle(miga.Mirando, Vector3.right), Is.LessThan(1f));
+        }
+
+        [UnityTest]
+        public IEnumerator NoEmpujaUnaCajaContraLaPared()
+        {
+            var miga = CrearMiga();
+            var caja = Caja();
+            Cubo(new Vector3(2.5f, 1f, 0f), new Vector3(1f, 2f, 4f));   // pared con la cara en x = 2
+            yield return Agarrar(miga, caja);
+
+            miga.entrada.mover = Vector2.right;
+            yield return new WaitForSeconds(2f);
+
+            Assert.That(caja.transform.position.x, Is.EqualTo(1.6f).Within(0.01f));   // tocando la pared, sin meterse
+            Assert.That(miga.transform.position.x, Is.LessThan(1.2f));
+        }
+
+        [UnityTest]
+        public IEnumerator MueveUnaCajaDeLado()
+        {
+            var miga = CrearMiga();
+            var caja = Caja();
+            yield return Agarrar(miga, caja);
+
+            miga.entrada.mover = Vector2.up;   // hacia el fondo, de lado respecto a la caja
+            yield return new WaitForSeconds(1f);
+
+            Assert.That(miga.Agarrado, Is.EqualTo(caja), Donde(miga));
+            Assert.That(caja.transform.position.z, Is.GreaterThan(0.5f));
+            Assert.That(miga.transform.position.z, Is.EqualTo(caja.transform.position.z).Within(0.03f));
+            Assert.That(Vector3.Angle(miga.Mirando, Vector3.right), Is.LessThan(1f));
+        }
+
+        [UnityTest]
+        public IEnumerator SiLaCajaChocaDeLadoMigaTambienSeDetiene()
+        {
+            var miga = CrearMiga();
+            var caja = Caja();
+            Cubo(new Vector3(1f, 1f, 1.5f), new Vector3(4f, 2f, 1f));   // pared al fondo con la cara en z = 1
+            yield return Agarrar(miga, caja);
+
+            miga.entrada.mover = Vector2.up;
+            yield return new WaitForSeconds(1.5f);
+
+            Assert.That(caja.transform.position.z, Is.EqualTo(0.6f).Within(0.01f));   // la caja toca la pared
+            Assert.That(miga.transform.position.z, Is.EqualTo(0.6f).Within(0.03f), Donde(miga));   // y Miga no se adelanta
+            Assert.That(miga.Agarrado, Is.EqualTo(caja), Donde(miga));
+        }
     }
 }

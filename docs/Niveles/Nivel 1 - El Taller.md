@@ -9,7 +9,7 @@ Miga despierta dentro de un costurero, descubre que está atada por un hilo rojo
 
 | # | Zona | Qué pasa | Qué aprende el jugador |
 |---|---|---|---|
-| 1 | El costurero | Miga despierta entre botones y carretes. Empuja la tapa para salir. | Moverse, empujar, la luz de Chispa |
+| 1 | El costurero | Miga despierta entre botones y carretes. Empuja un carrete hasta la pila para trepar y salir. | Moverse, empujar, la luz de Chispa |
 | 2 | La mesa de corte | Cruza entre telas, alfileres y una regla que sirve de puente. Al correr, el hilo se tensa y La Costurera gira la cabeza. | Saltar, trepar, que correr la delata |
 | 3 | La máquina de coser | La aguja sube y baja. Miga pisa el pedal para encenderla: el ruido tapa sus pasos y puede correr. | Usar el ruido a favor, pasar a ritmo |
 | 4 | El armario de retazos | A oscuras entre muñecos remendados. La Costurera busca clavando los dedos. | Tapar el frasco, esconderse |
@@ -32,7 +32,7 @@ Paredes invisibles:
 
 | Zona | Dónde | Recorrido y profundidad |
 |---|---|---|
-| 1 | Costurero de 2.55 m sobre la mesa de corte | Caja de 5 × 3.4 m. Dos carretes (0.85 y 1.7 m), del lado de la cámara, sirven de escalera para salir. La tapa queda medio abierta hasta que se pueda empujar |
+| 1 | Costurero de 2.55 m sobre la mesa de corte | Caja de 5 × 3.4 m. Un carrete suelto (0.85 m) se empuja hasta la pila de carretes (1.7 m), del lado de la cámara: juntos son la escalera para salir por donde la tapa quedó abierta |
 | 2 | Mesa de corte, 30 m | Tela (0.6) y alfileres tumbados que tapan parte de la banda: se saltan o se rodean. Después, una fila de rollos de 1.6 m (no se trepa) separa **dos caminos**: por el fondo, agachada bajo una tela colgante; por el frente, junto a un montón de telas para esconderse. Se juntan en la regla, que mide 0.85 m de ancho |
 | 3 | Mesa de la máquina | Pedal (3 m de ancho), base de la máquina (0.85) de lado a lado bajo la aguja, y 4 cajones abiertos como escalera hasta el piso. La silueta de La Costurera queda al fondo, fuera de la banda |
 | 4 | Armario, 17 m de ancho | Se entra por la rendija de abajo (1.2). Tres montones de retazos (1.2) en zigzag: al frente, al fondo y otra vez al frente. Los muñecos de 5 m quedan más atrás, fuera del camino |
@@ -59,6 +59,7 @@ Calma (1) → tensión baja (2) → respiro con truco (3) → miedo (4) → deci
 - 2026-11-20: el nivel tiene profundidad. Miga camina en una banda de 6 m de fondo cerrada con paredes invisibles, y las mesas miden 15 m de fondo para que se sientan inmensas.
 - 2026-11-20: en la zona 2 el camino se separa en dos (agachada por el fondo o escondida por el frente) y se junta otra vez en la regla.
 - 2026-11-20: el costurero y el armario se ven como casa de muñecas: sin pared del frente, para ver a Miga adentro.
+- 2026-11-20: para salir del costurero Miga empuja un carrete suelto hasta la pila. Es la primera vez que empuja, y no hay otra forma de salir. La tapa queda medio abierta y no se mueve.
 
 ## Final del nivel
 Miga cae del otro lado de la pared, sola y a oscuras. Chispa vuelve a brillar. A lo lejos se oye otro cuarto.

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Miga.Juego
 {
     /// <summary>
-    /// Mueve a Miga: caminar, correr, agacharse, saltar y trepar bordes. La cámara mira de lado, pero Miga
+    /// Mueve a Miga: caminar, correr, agacharse, saltar, trepar bordes y empujar o jalar objetos. La cámara mira de lado, pero Miga
     /// también se mueve en profundidad, como en Little Nightmares (ver docs/Juego/Vision.md).
     /// No lee el teclado: usa <see cref="entrada"/>, que llena EntradaMiga (o una prueba).
     /// </summary>
@@ -19,6 +19,8 @@ namespace Miga.Juego
             public Vector2 mover;
             public bool correr;
             public bool agachar;
+            [Tooltip("Mantener para agarrar lo que tiene enfrente y empujarlo o jalarlo")]
+            public bool agarrar;
         }
 
         [Header("Velocidades (m/s)")]
@@ -47,6 +49,10 @@ namespace Miga.Juego
         [Header("Agacharse")]
         public float alturaAgachada = 0.6f;
 
+        [Header("Empujar y jalar")]
+        [Tooltip("Velocidad con un objeto ligero. La multiplica la Ligereza de cada Empujable")]
+        public float velocidadEmpujar = 0.8f;
+
         [Tooltip("El modelo hijo: gira para mirar hacia donde camina")]
         public Transform modelo;
 
@@ -56,11 +62,15 @@ namespace Miga.Juego
         public bool Corriendo { get; private set; }
         public bool Agachada { get; private set; }
         public bool Trepando { get; private set; }
+        /// <summary>Lo que tiene agarrado para empujar o jalar; null si no tiene nada.</summary>
+        public Empujable Agarrado { get; private set; }
         public bool EnElPiso => cc.isGrounded;
         /// <summary>Hacia dónde mira, en el plano del piso (largo 1).</summary>
         public Vector3 Mirando => mirando;
         public event Action Salto;
         public event Action Aterrizo;
+
+        const float AlturaManos = 0.4f;   // agarra lo que tenga enfrente a esta altura
 
         CharacterController cc;
         Vector3 vel, mirando = Vector3.right;
@@ -103,6 +113,13 @@ namespace Miga.Juego
             var dir = new Vector3(entrada.mover.x, 0f, entrada.mover.y);
             dir = dir.magnitude < 0.15f ? Vector3.zero : Vector3.ClampMagnitude(dir, 1f);
             bool camina = dir != Vector3.zero;
+
+            if (ActualizarAgarre(enPiso))
+            {
+                MoverAgarrada(dir, dt);
+                return;
+            }
+
             if (camina)   // gira sobre el eje vertical, así nunca se inclina aunque dé media vuelta
             {
                 float actual = Mathf.Atan2(mirando.x, mirando.z) * Mathf.Rad2Deg;
@@ -116,7 +133,8 @@ namespace Miga.Juego
             vel = Vector3.MoveTowards(vel, dir * maxima, aceleracion * dt);
 
             bool pidioSalto = Time.time - ultimoSaltoPedido <= memoriaSalto;
-            bool empujaEnElAire = !enPiso && camina && Vector3.Dot(dir.normalized, mirando) > 0.7f;
+            // Con el botón de agarrar apretado no se trepa sola: quiere agarrar, no subirse
+            bool empujaEnElAire = !enPiso && camina && !entrada.agarrar && Vector3.Dot(dir.normalized, mirando) > 0.7f;
             if ((pidioSalto || empujaEnElAire) && !Agachada && BuscarBorde(out Vector3 arriba))
             {
                 ultimoSaltoPedido = -1f;
@@ -156,6 +174,86 @@ namespace Miga.Juego
             Agachada = quiere;
             cc.height = Agachada ? alturaAgachada : Escala.AlturaMiga;
             cc.center = new Vector3(0f, cc.height / 2f, 0f);
+        }
+
+        // Mientras se mantiene el botón, agarra lo que tiene enfrente. Lo suelta al soltar el botón, al agacharse,
+        // al caer o si ya no lo tiene enfrente.
+        bool ActualizarAgarre(bool enPiso)
+        {
+            bool pisando = enPiso || Time.time - ultimoEnPiso <= tiempoCoyote;   // tolera que el piso parpadee al chocar
+            float alcanceManos = cc.radius + (Agarrado != null ? 0.25f : 0.15f);   // ya agarrado, no lo suelta por un pelo
+            if (!entrada.agarrar || !pisando || Agachada || !BuscarEmpujable(alcanceManos, out var objeto, out var eje))
+            {
+                Agarrado = null;
+                return false;
+            }
+            if (objeto != Agarrado)
+            {
+                Agarrado = objeto;
+                mirando = eje;   // queda de frente a la cara que agarró
+                vel = Vector3.zero;
+                Corriendo = false;
+            }
+            return true;
+        }
+
+        // Lleva el objeto hacia donde se mueva, sin darse vuelta: adelante lo empuja, atrás lo jala y a los lados
+        // lo lleva de lado. Se mueve por partes para que, si uno choca, el otro se deslice a lo largo de la pared.
+        void MoverAgarrada(Vector3 dir, float dt)
+        {
+            velY = -2f;   // pegada al piso
+            var paso = dir * (velocidadEmpujar * Agarrado.ligereza * dt);
+            float avance = Vector3.Dot(paso, mirando);
+            var adelante = mirando * avance;
+            MoverJuntos(adelante, avance > 0f);
+            MoverJuntos(paso - adelante, false);
+            if (modelo)
+                modelo.rotation = Quaternion.LookRotation(mirando);
+        }
+
+        // Mueve a Miga y al objeto lo mismo. Primero el que va adelante; si el otro no puede seguirlo, lo regresa.
+        void MoverJuntos(Vector3 paso, bool primeroElObjeto)
+        {
+            if (primeroElObjeto)
+            {
+                var movido = Agarrado.Mover(paso, cc);
+                var hecho = MoverMiga(movido);
+                Agarrado.Mover(hecho - movido, cc);
+            }
+            else
+            {
+                var hecho = MoverMiga(paso);
+                var movido = Agarrado.Mover(hecho, cc);
+                MoverMiga(movido - hecho);
+            }
+        }
+
+        // Mueve a Miga pegada al piso. Devuelve cuánto avanzó en la dirección pedida, sin la altura.
+        Vector3 MoverMiga(Vector3 paso)
+        {
+            var antes = transform.position;
+            cc.Move(paso + Vector3.up * (velY * Time.deltaTime));
+            float largo = paso.magnitude;
+            return largo < 0.0001f ? Vector3.zero : paso / largo * Vector3.Dot(transform.position - antes, paso / largo);
+        }
+
+        // ¿Tiene enfrente, a la altura de las manos, algo que se pueda empujar? eje: hacia el objeto, de frente a su cara.
+        bool BuscarEmpujable(float distancia, out Empujable objeto, out Vector3 eje)
+        {
+            objeto = null;
+            eje = mirando;
+            RaycastHit golpe = default;   // lo más cercano que no sea su propia cápsula: el rayo sale de adentro de ella
+            foreach (var h in Physics.RaycastAll(transform.position + Vector3.up * AlturaManos, mirando, distancia,
+                                                 ~0, QueryTriggerInteraction.Ignore))
+                if (h.collider != cc && (golpe.collider == null || h.distance < golpe.distance))
+                    golpe = h;
+            if (golpe.collider == null)
+                return false;
+            eje = Vector3.ProjectOnPlane(-golpe.normal, Vector3.up).normalized;
+            if (Vector3.Dot(eje, mirando) < 0.5f)
+                return false;   // de frente, no de costado
+            objeto = golpe.collider.GetComponentInParent<Empujable>();
+            return objeto != null;
         }
 
         // Busca enfrente, hacia donde mira, un borde entre alturaMinimaBorde y alcance, con lugar para pararse encima.
