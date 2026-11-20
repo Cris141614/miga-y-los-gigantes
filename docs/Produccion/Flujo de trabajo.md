@@ -29,7 +29,10 @@ Cómo pasa un cambio de una idea a una versión publicada. Los nombres y prefijo
 
 ## Pruebas automáticas
 
-Usan el Test Framework de Unity (NUnit) y corren solas en cada PR que toca `juego/`. El check **Resultados de pruebas** dice cuántas pasaron.
+Usan el Test Framework de Unity (NUnit) y corren solas en cada PR que toca `juego/`.
+
+- **Compilar y probar** es el check que manda: si el proyecto no compila o una prueba falla, sale en rojo.
+- **Resultados de pruebas** siempre sale gris (neutral), porque GameCI lo crea así. Solo informa: su título dice cuántas pasaron (`3/3 - Passed`) y dentro está el detalle de cada una.
 
 | Tipo | Carpeta | Para qué | Ejemplo |
 |---|---|---|---|
@@ -99,3 +102,4 @@ El token de Sentry nunca va al repositorio: la carpeta `Assets/Plugins/Sentry/` 
 - 2026-11-12: CI solo baja de LFS los archivos de `juego/`, para no gastar la cuota gratis.
 - 2026-11-16: Sentry captura también los errores del editor (`Capture In Editor`). Los PR de Dependabot necesitan sus propios secretos de Unity (`gh secret set ... --app dependabot`).
 - 2026-11-19: el código del juego va en el ensamblado `Miga.Juego` y las pruebas en dos ensamblados aparte, EditMode y PlayMode. La primera prueba real comprueba la escala de los modelos.
+- 2026-11-19: el check *Resultados de pruebas* queda neutral aunque todo pase; se juzga por *Compilar y probar*.
