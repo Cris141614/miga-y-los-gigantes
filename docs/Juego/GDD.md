@@ -28,7 +28,7 @@ No se empieza otro nivel hasta que este se pueda jugar de principio a fin.
 ## Controles
 | Acción | Teclado | Mando |
 |---|---|---|
-| Moverse | A / D | Stick izquierdo |
+| Moverse (A/D a los lados, W/S hacia el fondo y hacia la cámara) | WASD | Stick izquierdo |
 | Correr | Shift | Gatillo derecho |
 | Agacharse | Ctrl | B |
 | Saltar y trepar | Espacio | A |

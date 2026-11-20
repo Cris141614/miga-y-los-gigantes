@@ -5,7 +5,7 @@ Caminar, correr, agacharse, saltar, trepar bordes, empujar y jalar objetos peque
 Correr hace ruido. Agacharse no.
 
 ### Cómo está hecho
-Miga es una cápsula con `CharacterController` que solo se mueve de lado: nunca se sale de su carril en Z. Va a cambiar: según la [[Vision]], también se moverá en profundidad.
+Miga es una cápsula con `CharacterController`. La cámara mira de lado, pero Miga se mueve en las cuatro direcciones: izquierda y derecha en pantalla, y hacia el fondo y hacia la cámara, como en *Little Nightmares* (ver [[Vision]]). Gira suave y algo lento hacia donde camina, como con miedo (media vuelta en unos 0.6 s, frenando al final; campo *Tiempo Giro* = 0.2), y trepa y se agacha mirando en cualquier dirección.
 
 | Valor | Cuánto |
 |---|---|
