@@ -27,6 +27,33 @@ Cómo pasa un cambio de una idea a una versión publicada. Los nombres y prefijo
 5. Revisar los checks: **Titulo del PR** (obligatorio), **Unity** (si tocaste `juego/`) y **GitGuardian**.
 6. Fusionar con **Squash**: el título del PR queda como el commit en `develop`. La rama se borra y la issue se cierra sola.
 
+## Pruebas automáticas
+
+Usan el Test Framework de Unity (NUnit) y corren solas en cada PR que toca `juego/`. El check **Resultados de pruebas** dice cuántas pasaron.
+
+| Tipo | Carpeta | Para qué | Ejemplo |
+|---|---|---|---|
+| EditMode | `Assets/_Proyecto/Tests/EditMode/` | Lo que no necesita darle a Play: cálculos, escalas, configuración de assets | `EscalaDeLosModelosPruebas` |
+| PlayMode | `Assets/_Proyecto/Tests/PlayMode/` | Lo que necesita frames y física: moverse, saltar, que un Guardador detecte a Miga | `FisicaPruebas` |
+
+- El código del juego va en `Assets/_Proyecto/Scripts/`, dentro del ensamblado `Miga.Juego`. Las pruebas lo pueden usar porque lo referencian.
+- Cada mecánica nueva llega con al menos una prueba.
+- La clase termina en `Pruebas` y cada prueba dice en su nombre qué comprueba: `UnaCajaCaeYQuedaSobreElPiso`.
+
+### Correrlas en Unity
+1. `Window > General > Test Runner`.
+2. Pestaña **EditMode** o **PlayMode** > **Run All**.
+3. Verde, pasa. Rojo, clic en la prueba para ver qué falló.
+
+### Escribir una prueba
+```csharp
+[Test]          // se comprueba de una vez
+public void MigaMideUnMetro() { Assert.That(Escala.AlturaMiga, Is.EqualTo(1f)); }
+
+[UnityTest]     // solo PlayMode: puede esperar frames o segundos
+public IEnumerator MigaCaeAlPiso() { yield return new WaitForSeconds(1f); Assert.That(/* ... */); }
+```
+
 ## Publicar una versión
 
 Cada milestone es una versión (`v0.1.0 - Bloques grises`). Mientras la versión empiece con `0.` se publica como **pre-release** (beta).
@@ -71,3 +98,4 @@ El token de Sentry nunca va al repositorio: la carpeta `Assets/Plugins/Sentry/` 
 - 2026-11-12: versiones `0.x` como pre-release hasta que el Nivel 1 esté completo.
 - 2026-11-12: CI solo baja de LFS los archivos de `juego/`, para no gastar la cuota gratis.
 - 2026-11-16: Sentry captura también los errores del editor (`Capture In Editor`). Los PR de Dependabot necesitan sus propios secretos de Unity (`gh secret set ... --app dependabot`).
+- 2026-11-19: el código del juego va en el ensamblado `Miga.Juego` y las pruebas en dos ensamblados aparte, EditMode y PlayMode. La primera prueba real comprueba la escala de los modelos.
