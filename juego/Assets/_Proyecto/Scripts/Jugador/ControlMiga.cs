@@ -5,7 +5,8 @@ using UnityEngine;
 namespace Miga.Juego
 {
     /// <summary>
-    /// Mueve a Miga de lado: caminar, correr, agacharse, saltar y trepar bordes.
+    /// Mueve a Miga: caminar, correr, agacharse, saltar y trepar bordes. La cámara mira de lado, pero Miga
+    /// también se mueve en profundidad, como en Little Nightmares (ver docs/Juego/Vision.md).
     /// No lee el teclado: usa <see cref="entrada"/>, que llena EntradaMiga (o una prueba).
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
@@ -14,7 +15,8 @@ namespace Miga.Juego
         [Serializable]
         public struct Entrada
         {
-            public float mover;     // -1 izquierda, 1 derecha
+            [Tooltip("x: izquierda (-1) y derecha (1) en pantalla. y: hacia la cámara (-1) y hacia el fondo (1)")]
+            public Vector2 mover;
             public bool correr;
             public bool agachar;
         }
@@ -24,6 +26,8 @@ namespace Miga.Juego
         public float velocidadCorrer = 3.2f;
         public float velocidadAgachada = 0.8f;
         public float aceleracion = 14f;
+        [Tooltip("Segundos que tarda, más o menos, en girar hacia donde camina. Más alto, más lento y pesado")]
+        public float tiempoGiro = 0.2f;   // lento y pesado, como con miedo
 
         [Header("Salto")]
         public float alturaSalto = 0.45f;
@@ -53,13 +57,15 @@ namespace Miga.Juego
         public bool Agachada { get; private set; }
         public bool Trepando { get; private set; }
         public bool EnElPiso => cc.isGrounded;
+        /// <summary>Hacia dónde mira, en el plano del piso (largo 1).</summary>
+        public Vector3 Mirando => mirando;
         public event Action Salto;
         public event Action Aterrizo;
 
         CharacterController cc;
-        float carril, velX, velY;
+        Vector3 vel, mirando = Vector3.right;
+        float velY, velGiro;
         float ultimoEnPiso = -1f, ultimoSaltoPedido = -1f;
-        int mirando = 1;
         bool enElAire;
 
         /// <summary>Pide un salto. Si hay un borde a su alcance enfrente, lo trepa.</summary>
@@ -79,11 +85,7 @@ namespace Miga.Juego
 
         void Reset() => AjustarCapsula();   // Unity lo llama al agregar el componente en el editor
 
-        void Awake()
-        {
-            cc = GetComponent<CharacterController>();
-            carril = transform.position.z;   // la cámara es de lado: Miga nunca se sale de su carril
-        }
+        void Awake() => cc = GetComponent<CharacterController>();
 
         void Update()
         {
@@ -97,15 +99,24 @@ namespace Miga.Juego
 
             ActualizarAgachada(enPiso);
 
-            float dir = Mathf.Abs(entrada.mover) < 0.15f ? 0f : Mathf.Clamp(entrada.mover, -1f, 1f);
-            if (dir != 0f)
-                mirando = dir > 0f ? 1 : -1;
-            Corriendo = entrada.correr && !Agachada && dir != 0f;
+            // Plano del piso: x es izquierda-derecha en pantalla, z es hacia el fondo
+            var dir = new Vector3(entrada.mover.x, 0f, entrada.mover.y);
+            dir = dir.magnitude < 0.15f ? Vector3.zero : Vector3.ClampMagnitude(dir, 1f);
+            bool camina = dir != Vector3.zero;
+            if (camina)   // gira sobre el eje vertical, así nunca se inclina aunque dé media vuelta
+            {
+                float actual = Mathf.Atan2(mirando.x, mirando.z) * Mathf.Rad2Deg;
+                float meta = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+                // Suave al empezar y al terminar el giro, no a velocidad fija
+                float nuevo = Mathf.SmoothDampAngle(actual, meta, ref velGiro, tiempoGiro);
+                mirando = Quaternion.Euler(0f, nuevo, 0f) * Vector3.forward;
+            }
+            Corriendo = entrada.correr && !Agachada && camina;
             float maxima = Agachada ? velocidadAgachada : Corriendo ? velocidadCorrer : velocidadCaminar;
-            velX = Mathf.MoveTowards(velX, dir * maxima, aceleracion * dt);
+            vel = Vector3.MoveTowards(vel, dir * maxima, aceleracion * dt);
 
             bool pidioSalto = Time.time - ultimoSaltoPedido <= memoriaSalto;
-            bool empujaEnElAire = !enPiso && dir != 0f;
+            bool empujaEnElAire = !enPiso && camina && Vector3.Dot(dir.normalized, mirando) > 0.7f;
             if ((pidioSalto || empujaEnElAire) && !Agachada && BuscarBorde(out Vector3 arriba))
             {
                 ultimoSaltoPedido = -1f;
@@ -125,7 +136,7 @@ namespace Miga.Juego
             }
             velY -= gravedad * dt;
 
-            var choques = cc.Move(new Vector3(velX * dt, velY * dt, carril - transform.position.z));
+            var choques = cc.Move((vel + Vector3.up * velY) * dt);
             if ((choques & CollisionFlags.Above) != 0 && velY > 0f)
                 velY = 0f;
             bool aterrizo = enElAire && cc.isGrounded;
@@ -134,7 +145,7 @@ namespace Miga.Juego
                 Aterrizo?.Invoke();
 
             if (modelo)
-                modelo.rotation = Quaternion.LookRotation(new Vector3(mirando, 0f, 0f));
+                modelo.rotation = Quaternion.LookRotation(mirando);
         }
 
         void ActualizarAgachada(bool enPiso)
@@ -147,23 +158,25 @@ namespace Miga.Juego
             cc.center = new Vector3(0f, cc.height / 2f, 0f);
         }
 
-        // Busca enfrente un borde entre alturaMinimaBorde y alcance, con lugar para pararse encima.
+        // Busca enfrente, hacia donde mira, un borde entre alturaMinimaBorde y alcance, con lugar para pararse encima.
         bool BuscarBorde(out Vector3 destino)
         {
             destino = default;
             var pies = transform.position;
-            var frente = new Vector3(mirando, 0f, 0f);
-            if (!Physics.Raycast(pies + Vector3.up * alturaMinimaBorde, frente, out var pared, cc.radius + 0.25f,
+            if (!Physics.Raycast(pies + Vector3.up * alturaMinimaBorde, mirando, out var pared, cc.radius + 0.25f,
                                  ~0, QueryTriggerInteraction.Ignore))
                 return false;
+            if (Vector3.Dot(pared.normal, -mirando) < 0.5f)
+                return false;   // la pared tiene que estar de frente, no de costado
 
             // Desde arriba de su alcance, bajar justo detrás de la orilla hasta dar con la parte de arriba
-            var arriba = new Vector3(pared.point.x + mirando * (cc.radius + 0.05f), pies.y + alcance + 0.05f, carril);
+            var detras = pared.point + mirando * (cc.radius + 0.05f);
+            var arriba = new Vector3(detras.x, pies.y + alcance + 0.05f, detras.z);
             if (!Physics.Raycast(arriba, Vector3.down, out var tope, alcance + 0.05f - alturaMinimaBorde,
                                  ~0, QueryTriggerInteraction.Ignore))
                 return false;   // más alto que su alcance: el rayo empieza dentro de la pared y no la ve
 
-            destino = new Vector3(arriba.x, tope.point.y + 0.01f, carril);
+            destino = new Vector3(arriba.x, tope.point.y + 0.01f, arriba.z);
             return !HayAlgoEn(destino, 0.02f, Escala.AlturaMiga);
         }
 
@@ -171,7 +184,8 @@ namespace Miga.Juego
         {
             Trepando = true;
             Corriendo = false;
-            velX = velY = 0f;
+            vel = Vector3.zero;
+            velY = 0f;
             cc.enabled = false;
             var inicio = transform.position;
             var orilla = new Vector3(inicio.x, destino.y, inicio.z);
