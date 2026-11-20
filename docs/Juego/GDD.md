@@ -32,7 +32,7 @@ No se empieza otro nivel hasta que este se pueda jugar de principio a fin.
 | Correr | Shift | Gatillo derecho |
 | Agacharse | Ctrl | B |
 | Saltar y trepar | Espacio | A |
-| Agarrar y empujar | E (mantener) | X (mantener) |
+| Agarrar, empujar y jalar | E (mantener) | X (mantener) |
 | Tapar el frasco | Q (mantener) | Gatillo izquierdo |
 | Asomar la cámara | Flechas | Stick derecho |
 
