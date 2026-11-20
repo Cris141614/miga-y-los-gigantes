@@ -32,7 +32,7 @@ Control de todo lo que necesita el juego. Estados: `pendiente`, `en proceso`, `l
 
 | Elemento | Zona | Estado |
 |---|---|---|
-| Nivel en bloques grises (`esc_nivel1_taller`) | 1 a 6 | listo |
+| Nivel en bloques grises con profundidad (`esc_nivel1_taller`) | 1 a 6 | listo |
 | Costurero con tapa | 1 | pendiente |
 | Mesa de corte | 2 | pendiente |
 | Regla de madera | 2 | pendiente |
