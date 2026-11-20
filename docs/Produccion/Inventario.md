@@ -6,9 +6,9 @@ Control de todo lo que necesita el juego. Estados: `pendiente`, `en proceso`, `l
 
 | Elemento | Referencia | Modelo | Esqueleto | En Unity | Estado |
 |---|---|---|---|---|---|
-| Miga | `miga-vistas.png` | — | — | — | pendiente |
-| La Costurera | `costurera-vistas.png` | — | — | — | pendiente |
-| Chispa | — | — | no aplica | — | pendiente |
+| Miga | `miga-vistas.png` | `miga.blend` | `Miga_Esqueleto` (humanoide, 37 huesos) | `mod_miga.fbx` | en proceso (falta probarla en Unity y animar) |
+| La Costurera | `costurera-vistas.png` | `costurera.blend` | `Costurera_Esqueleto` (genérico, 27 huesos) | `mod_costurera.fbx` | en proceso (falta probarla en Unity y animar) |
+| Chispa | — | dentro de `miga.blend` | no aplica | dentro de `mod_miga.fbx` | en proceso |
 
 ## Animaciones
 
