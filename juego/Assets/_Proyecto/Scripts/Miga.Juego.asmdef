@@ -1,7 +1,9 @@
 {
     "name": "Miga.Juego",
     "rootNamespace": "Miga.Juego",
-    "references": [],
+    "references": [
+        "Unity.InputSystem"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

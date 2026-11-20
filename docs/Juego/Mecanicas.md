@@ -4,6 +4,20 @@
 Caminar, correr, agacharse, saltar, trepar bordes, empujar y jalar objetos pequeños.
 Correr hace ruido. Agacharse no.
 
+### Cómo está hecho
+Miga es una cápsula con `CharacterController` que solo se mueve de lado: nunca se sale de su carril en Z.
+
+| Valor | Cuánto |
+|---|---|
+| Caminar / correr / agachada | 1.6 / 3.2 / 0.8 m/s |
+| Salto | 0.45 m |
+| Trepar | Desde el piso, bordes de 0.3 a 1 m (su altura). Saltando se agarra de bordes de hasta unos 1.45 m. Más alto, no |
+| Agachada | 0.6 m de alto; bajo un techo bajo no se puede parar |
+
+- `Scripts/Jugador/ControlMiga.cs` mueve a Miga. Avisa a otros sistemas con `Corriendo`, `Agachada` y los eventos `Salto` y `Aterrizo`, que usarán el ruido y el hilo rojo.
+- `Scripts/Jugador/EntradaMiga.cs` lee teclado y mando con los controles del [[GDD]]. Agacharse se mantiene apretado.
+- Todos los valores se ajustan en el Inspector de `pf_miga`. Las pruebas están en `Tests/PlayMode/ControlMigaPruebas.cs`.
+
 ## La luz de Chispa
 - El frasco ilumina un radio corto alrededor de Miga.
 - Con luz se ven los peligros del piso: alfileres, huecos, hilos tensos.
