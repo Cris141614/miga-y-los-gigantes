@@ -9,7 +9,7 @@ Regla de diseño: un oficio cotidiano con **un solo rasgo deformado**, y una col
 | La Relojera | Cuello de péndulo | Cosas que hacen ruido | Ritmo: detecta lo que rompe el compás | Idea |
 
 ## Reglas comunes
-- Miden como una persona adulta; para Miga son edificios.
+- Son gigantes: miden unas 17 veces lo que Miga. Para ella son edificios.
 - No hablan. Hacen los sonidos de su oficio.
 - No persiguen por maldad: quieren guardar a Miga.
 - Cada uno tiene un punto ciego ligado a su rasgo, y de ahí sale la mecánica de su nivel.

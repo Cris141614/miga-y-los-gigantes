@@ -17,8 +17,7 @@ Cómo pasa algo de idea a estar dentro del juego.
 - Alinear siempre la línea de piso con el origen.
 
 ## Escala
-- **Miga mide 1 unidad de alto en Unity.** El mundo se construye gigante alrededor de ella.
-- No se hace a Miga de 10 cm: la física y la cámara de Unity se comportan mal con objetos tan pequeños.
+- **Miga mide 1 unidad (1 metro) en Unity.** El mundo se construye a la escala de los Guardadores, unas 17 veces más grande.
 - La Costurera mide unas 17 unidades.
 - En Blender: 1 unidad = 1 metro, igual que Unity.
 

@@ -1,7 +1,7 @@
 # Documento de diseño (GDD)
 
 ## Concepto
-Juego 3D de suspenso con cámara lateral. Una niña diminuta cruza los cuartos de una casa de gigantes. Sin diálogo y sin texto.
+Juego 3D de suspenso con cámara lateral. Una niña pequeña cruza los cuartos de una casa de gigantes. Sin diálogo y sin texto.
 
 ## Pilares
 1. **Soy pequeña.** Todo lo cotidiano es enorme y peligroso.

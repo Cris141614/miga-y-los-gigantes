@@ -3,7 +3,7 @@
 ![[miga-vistas.png]]
 
 ## Quién es
-Una niña del tamaño de una taza, perdida en la Casa Grande. Curiosa, terca y callada. Tiene miedo, pero sigue avanzando.
+Una niña pequeña, perdida en la Casa Grande. Curiosa, terca y callada. Tiene miedo, pero sigue avanzando.
 
 ## Apariencia
 - Cabeza grande, piernas delgadas.
