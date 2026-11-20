@@ -17,11 +17,11 @@ namespace Miga.Herramientas
         const string CarpetaMateriales = "Assets/_Proyecto/Art/Materiales/Grises";
         static readonly Vector3 InicioMiga = new Vector3(2.8f, 12.75f, 0f);
 
-        enum Tipo { Estructura, Paso, Obstaculo, Peligro, Escondite, Mecanismo, Fondo, Limite }
+        enum Tipo { Estructura, Paso, Obstaculo, Peligro, Escondite, Mecanismo, Fondo, Limite, Empujable }
 
         // Mismos colores que la leyenda del plano (docs/Referencias/Escenarios/nivel1-plano.png)
         // Limite no se ve: es una pared invisible.
-        static readonly string[] Colores = { "#8A8F9C", "#5B9BD5", "#E0A040", "#D9534F", "#6BAF6B", "#A070C8", "#D5D8DE", "#000000" };
+        static readonly string[] Colores = { "#8A8F9C", "#5B9BD5", "#E0A040", "#D9534F", "#6BAF6B", "#A070C8", "#D5D8DE", "#000000", "#2FA4A0" };
 
         static readonly string[] Zonas =
         {
@@ -70,7 +70,8 @@ namespace Miga.Herramientas
             new Bloque(1, "Costurero_Pared_Fondo", 2f, 7.1f, 12.75f, 15.3f, 1.4f, 1.7f, Tipo.Estructura),
             new Bloque(1, "Costurero_Pared_Frente", 2f, 7.1f, 12.75f, 15.3f, -1.7f, -1.4f, Tipo.Limite),
             new Bloque(1, "Costurero_Tapa", 2f, 5.6f, 15.3f, 15.5f, -1.7f, 1.7f, Tipo.Mecanismo),
-            new Bloque(1, "Carrete_1", 5.2f, 6f, 12.75f, 13.6f, -1.4f, -0.4f, Tipo.Paso),
+            // Suelto: hay que empujarlo hasta la pila para salir (#8)
+            new Bloque(1, "Carrete_Empujable", 3.6f, 4.4f, 12.75f, 13.6f, -1.4f, -0.4f, Tipo.Empujable),
             new Bloque(1, "Carretes_2", 6f, 6.8f, 12.75f, 14.45f, -1.4f, -0.4f, Tipo.Paso),
             new Bloque(2, "Tela_1", 9f, 12f, 12.75f, 13.35f, -3f, 0f, Tipo.Obstaculo),
             new Bloque(2, "Alfiler_1", 14f, 14.2f, 12.75f, 12.92f, -2f, 1f, Tipo.Peligro),
@@ -145,7 +146,10 @@ namespace Miga.Herramientas
                     Object.DestroyImmediate(cubo.GetComponent<MeshRenderer>());
                 else
                     cubo.GetComponent<Renderer>().sharedMaterial = Material(b.tipo);
-                cubo.isStatic = b.tipo != Tipo.Mecanismo;   // los mecanismos se van a mover en otras issues
+                // Lo que se mueve no puede ser estático: los mecanismos (en otras issues) y lo que se empuja
+                cubo.isStatic = b.tipo != Tipo.Mecanismo && b.tipo != Tipo.Empujable;
+                if (b.tipo == Tipo.Empujable)
+                    cubo.AddComponent<Empujable>();
             }
 
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabMiga);
