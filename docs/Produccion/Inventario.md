@@ -72,7 +72,7 @@ Control de todo lo que necesita el juego. Estados: `pendiente`, `en proceso`, `l
 
 | Sistema | Estado |
 |---|---|
-| Movimiento de Miga | pendiente |
+| Movimiento de Miga | en proceso (cápsula lista, falta animar) |
 | Cámara lateral | pendiente |
 | Luz del frasco | pendiente |
 | Ruido | pendiente |
