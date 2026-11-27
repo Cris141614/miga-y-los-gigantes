@@ -1,7 +1,7 @@
 # Lore
 
 ## La premisa
-Miga es una niña del tamaño de una taza. Despierta dentro de un costurero, en una casa donde todo es enorme. No recuerda cómo llegó ni si siempre fue así de pequeña.
+Miga es una niña pequeña. Despierta dentro de un costurero en una casa de gigantes, donde un carrete de hilo le llega al pecho y unas tijeras miden más de tres veces lo que ella. No recuerda cómo llegó.
 
 ## La Casa Grande
 - Nadie sabe dónde está. No tiene ventanas a la calle, solo a otros cuartos.
@@ -9,7 +9,7 @@ Miga es una niña del tamaño de una taza. Despierta dentro de un costurero, en 
 - Los cuartos están unidos por lugares que solo algo pequeño puede cruzar: zócalos rotos, desagües, el interior de las paredes.
 
 ## Los Guardadores
-Los gigantes que habitan la casa. Cada uno colecciona algo más pequeño que él y lo guarda para que no se pierda, no se rompa o no se vaya. No son malvados a sus propios ojos: cuidan. Ese es el horror.
+Los gigantes que habitan la casa: miden unas 17 veces lo que Miga. Cada uno colecciona algo más pequeño que él y lo guarda para que no se pierda, no se rompa o no se vaya. No son malvados a sus propios ojos: cuidan. Ese es el horror.
 
 ## Miga
 - Fue "guardada" por [[La Costurera]], que la considera algo roto que hay que remendar.
@@ -32,3 +32,11 @@ No hay diálogo ni texto en pantalla. Todo se cuenta con lo que se ve: frascos c
 - Suspenso, no sangre.
 - Las criaturas dan miedo por su silueta, su tamaño y su sonido.
 - Nunca se ve la cara completa de un Guardador.
+
+## Lo que todavía no se sabe
+Por qué los Guardadores son gigantes, y qué es en realidad la Casa Grande, queda abierto a propósito. Cuando se defina, tiene que ser macabro y tenebroso.
+- Ideas para más adelante, sin decidir: personas gigantes, sombras gigantes, cosas que se mueven en el agua, rastros de otros niños guardados antes que Miga. Ver las ideas inspiradas en [[Vision]].
+
+## Decisiones
+- 2026-11-19: Miga deja de ser del tamaño de una taza. Es una niña pequeña y los Guardadores son gigantes de verdad, unas 17 veces más altos que ella. En pantalla no cambia nada: Miga sigue midiendo 1 unidad en Unity y La Costurera 17.
+- 2026-11-19: no se dice la edad de Miga, y el porqué de los gigantes queda sin definir por ahora.

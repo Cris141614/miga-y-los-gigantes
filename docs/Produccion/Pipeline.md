@@ -3,20 +3,27 @@
 Cómo pasa algo de idea a estar dentro del juego.
 
 ## Flujo
-1. **Referencia** en `docs/Referencias/` (hoja de vistas en PNG y SVG).
-2. **Modelo** en Blender, en `arte-fuente/blender/`.
-3. **Exportar** a FBX hacia `juego/Assets/_Proyecto/Art/Modelos/`.
-4. **Prefab** en Unity, en `Assets/_Proyecto/Prefabs/`.
-5. **Registrar** en [[Inventario]].
+Cada modelo pasa por las 7 etapas de [[Pipeline de arte]], todas en Blender. Cada etapa tiene una lista que hay que cumplir para aprobarla:
+
+1. [[Etapa 1 - Referencias 2D]]
+2. [[Etapa 2 - Blockout]]
+3. [[Etapa 3 - Esculpido]]
+4. [[Etapa 4 - Retopologia y UVs]]
+5. [[Etapa 5 - Bake y texturas]]
+6. [[Etapa 6 - Rig y animacion]]
+7. [[Etapa 7 - Integracion en Unity]]
+
+Los límites de triángulos, texturas y nombres están en [[Estandares de arte]]. Todo asset se registra en [[Inventario]].
 
 ## Usar las hojas de vistas en Blender
-- Como imagen de referencia: `Add > Image > Reference`, una por vista (frente con `1`, lado con `3`, espalda con `Ctrl+1`).
+- `miga.blend` y `costurera.blend` ya traen las tres vistas en la colección `Referencias`, con el piso en el origen y a la escala del juego. Se ven en vista ortográfica: frente con `1`, lado con `Ctrl+3`, espalda con `Ctrl+1`.
+- Para cargarlas en otro personaje: recortar sus vistas en `arte-fuente/blender/personajes/<personaje>/referencias/` (`<personaje>-frente.png`, `-lado.png`, `-espalda.png`), agregar sus medidas a `HOJAS` en `arte-fuente/blender/referencias.py` y, con su `.blend` abierto, correr en la pestaña Scripting: `exec(open(bpy.path.abspath("//../../referencias.py"), encoding="utf-8").read()); cargar("<personaje>")`.
+- A mano: `Add > Image > Reference`, una por vista.
 - Como dibujo 2D editable: `File > Import > Scalable Vector Graphics (.svg)`. Las formas entran como curvas.
 - Alinear siempre la línea de piso con el origen.
 
 ## Escala
-- **Miga mide 1 unidad de alto en Unity.** El mundo se construye gigante alrededor de ella.
-- No se hace a Miga de 10 cm: la física y la cámara de Unity se comportan mal con objetos tan pequeños.
+- **Miga mide 1 unidad (1 metro) en Unity.** El mundo se construye a la escala de los Guardadores, unas 17 veces más grande.
 - La Costurera mide unas 17 unidades.
 - En Blender: 1 unidad = 1 metro, igual que Unity.
 

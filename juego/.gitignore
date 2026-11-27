@@ -112,3 +112,10 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Sentry: esta carpeta guarda el token de subida de simbolos. Nunca se sube.
+/[Aa]ssets/Plugins/Sentry/
+/[Aa]ssets/Plugins/Sentry.meta
+
+# Configuracion personal del editor (VS Code)
+/.vscode/

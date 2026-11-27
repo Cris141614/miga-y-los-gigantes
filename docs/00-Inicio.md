@@ -12,13 +12,17 @@ Punto de entrada de la bóveda. Todo lo que se decide sobre el juego y el canal 
 - [[Chispa]]
 
 ## Juego
+- [[Vision]]
 - [[GDD]]
 - [[Mecanicas]]
 - [[Nivel 1 - El Taller]]
 
 ## Producción
 - [[Pipeline]]
+- [[Pipeline de arte]]
+- [[Estandares de arte]]
 - [[Convenciones]]
+- [[Flujo de trabajo]]
 - [[Inventario]]
 - [[Tareas]]
 

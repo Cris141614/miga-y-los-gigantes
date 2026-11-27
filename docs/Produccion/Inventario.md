@@ -2,13 +2,15 @@
 
 Control de todo lo que necesita el juego. Estados: `pendiente`, `en proceso`, `listo`, `en el juego`.
 
+En personajes, escenario y objetos, `en proceso` dice en qué etapa de [[Pipeline de arte]] va el asset; por ejemplo, `en proceso (3 esculpido)`.
+
 ## Personajes
 
 | Elemento | Referencia | Modelo | Esqueleto | En Unity | Estado |
 |---|---|---|---|---|---|
-| Miga | `miga-vistas.png` | — | — | — | pendiente |
-| La Costurera | `costurera-vistas.png` | — | — | — | pendiente |
-| Chispa | — | — | no aplica | — | pendiente |
+| Miga | `miga-vistas.png` | `miga.blend` | `Miga_Esqueleto` (humanoide, 37 huesos) | `mod_miga.fbx` | provisional: se rehace con [[Pipeline de arte]] desde la etapa 1 |
+| La Costurera | `costurera-vistas.png` | `costurera.blend` | `Costurera_Esqueleto` (genérico, 27 huesos) | `mod_costurera.fbx` | provisional: se rehace con [[Pipeline de arte]] desde la etapa 1 |
+| Chispa | — | dentro de `miga.blend` | no aplica | dentro de `mod_miga.fbx` | en proceso |
 
 ## Animaciones
 
@@ -32,6 +34,7 @@ Control de todo lo que necesita el juego. Estados: `pendiente`, `en proceso`, `l
 
 | Elemento | Zona | Estado |
 |---|---|---|
+| Nivel en bloques grises con profundidad (`esc_nivel1_taller`) | 1 a 6 | listo |
 | Costurero con tapa | 1 | pendiente |
 | Mesa de corte | 2 | pendiente |
 | Regla de madera | 2 | pendiente |
@@ -72,8 +75,9 @@ Control de todo lo que necesita el juego. Estados: `pendiente`, `en proceso`, `l
 
 | Sistema | Estado |
 |---|---|
-| Movimiento de Miga | pendiente |
-| Cámara lateral | pendiente |
+| Movimiento de Miga | en proceso (cápsula lista, falta animar) |
+| Empujar y jalar | listo (bloques grises) |
+| Cámara lateral | listo (bloques grises) |
 | Luz del frasco | pendiente |
 | Ruido | pendiente |
 | Estados de La Costurera | pendiente |
