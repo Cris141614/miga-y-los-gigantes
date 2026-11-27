@@ -21,6 +21,8 @@ namespace Miga.Juego
             public bool agachar;
             [Tooltip("Mantener para agarrar lo que tiene enfrente y empujarlo o jalarlo")]
             public bool agarrar;
+            [Tooltip("Mantener para tapar el frasco de Chispa con la bufanda")]
+            public bool tapar;
         }
 
         [Header("Velocidades (m/s)")]
@@ -49,6 +51,10 @@ namespace Miga.Juego
         [Header("Agacharse")]
         public float alturaAgachada = 0.6f;
 
+        [Header("Frasco tapado")]
+        [Tooltip("Velocidad con el frasco tapado: camina casi a ciegas y no puede correr")]
+        public float velocidadTapada = 1f;
+
         [Header("Empujar y jalar")]
         [Tooltip("Velocidad con un objeto ligero. La multiplica la Ligereza de cada Empujable")]
         public float velocidadEmpujar = 0.8f;
@@ -62,6 +68,8 @@ namespace Miga.Juego
         public bool Corriendo { get; private set; }
         public bool Agachada { get; private set; }
         public bool Trepando { get; private set; }
+        /// <summary>Tiene el frasco tapado: la luz de Chispa se apaga (ver LuzChispa).</summary>
+        public bool Tapando { get; private set; }
         /// <summary>Lo que tiene agarrado para empujar o jalar; null si no tiene nada.</summary>
         public Empujable Agarrado { get; private set; }
         public bool EnElPiso => cc.isGrounded;
@@ -99,6 +107,7 @@ namespace Miga.Juego
 
         void Update()
         {
+            Tapando = entrada.tapar;
             if (Trepando)
                 return;
 
@@ -128,8 +137,8 @@ namespace Miga.Juego
                 float nuevo = Mathf.SmoothDampAngle(actual, meta, ref velGiro, tiempoGiro);
                 mirando = Quaternion.Euler(0f, nuevo, 0f) * Vector3.forward;
             }
-            Corriendo = entrada.correr && !Agachada && camina;
-            float maxima = Agachada ? velocidadAgachada : Corriendo ? velocidadCorrer : velocidadCaminar;
+            Corriendo = entrada.correr && !Agachada && !Tapando && camina;
+            float maxima = Agachada ? velocidadAgachada : Tapando ? velocidadTapada : Corriendo ? velocidadCorrer : velocidadCaminar;
             vel = Vector3.MoveTowards(vel, dir * maxima, aceleracion * dt);
 
             bool pidioSalto = Time.time - ultimoSaltoPedido <= memoriaSalto;

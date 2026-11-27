@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 112071717088122651}
   - component: {fileID: 5759303503351492199}
   - component: {fileID: 6797699993708889086}
+  - component: {fileID: 4182739561027384615}
   m_Layer: 0
   m_Name: pf_miga
   m_TagString: Untagged
@@ -102,6 +103,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8f919845e3064abc9e33b3e626c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Miga.Juego::Miga.Juego.EntradaMiga
+--- !u!114 &4182739561027384615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8779164125430471065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 578052e7f55b4d82a4cb194feb1b0a4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Miga.Juego::Miga.Juego.LuzChispa
 --- !u!1001 &3770951047347638830
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -78,7 +78,7 @@ En personajes, escenario y objetos, `en proceso` dice en qué etapa de [[Pipelin
 | Movimiento de Miga | en proceso (cápsula lista, falta animar) |
 | Empujar y jalar | listo (bloques grises) |
 | Cámara lateral | listo (bloques grises) |
-| Luz del frasco | pendiente |
+| Luz del frasco | listo (bloques grises; falta que tiemble cerca de un Guardador) |
 | Ruido | pendiente |
 | Estados de La Costurera | pendiente |
 | Hilo rojo | pendiente |

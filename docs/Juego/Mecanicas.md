@@ -28,6 +28,29 @@ Miga es una cápsula con `CharacterController`. La cámara mira de lado, pero Mi
 
 La decisión constante es: ver por dónde piso, o que no me vean.
 
+### Cómo está hecho
+`Scripts/Sistemas/LuzChispa.cs`, en `pf_miga`, crea al empezar una luz puntual (`Luz_Chispa`) a la altura del frasco, hija del modelo para que gire con Miga. No proyecta sombras: va dentro del modelo y el cuerpo de Miga taparía su propia luz.
+
+| Valor | Cuánto |
+|---|---|
+| Radio | 2.5 m |
+| Intensidad | 2 |
+| Color | amarillo cálido |
+| Apagarse o prenderse | 0.15 s |
+
+- Tapar es la entrada `tapar` de `ControlMiga` (Q o gatillo izquierdo, en `EntradaMiga`). Mientras se mantiene:
+  - `Tapando` está en true;
+  - Miga camina a 1 m/s (campo *Velocidad Tapada*) y no puede correr;
+  - la luz baja a 0.
+- `LuzChispa.Encendida` dice si alumbra. La usarán los Guardadores para ver la luz ([[La Costurera]], #12).
+- Para que la luz se note, el Nivel 1 está en penumbra: luz direccional en 0.25 y luz ambiente en 0.35. La iluminación final es la issue #28.
+- Pruebas: `Tests/PlayMode/LuzChispaPruebas.cs`.
+- Pendiente: que la luz tiemble cuando un Guardador está cerca ([[Chispa]]). Necesita a La Costurera (#12).
+
+### Decisiones
+- 2026-11-27: con el frasco tapado Miga no puede correr: va casi a ciegas.
+- 2026-11-27: la luz no proyecta sombras, para que el modelo de Miga no tape su propia luz.
+
 ## El hilo rojo (Nivel 1)
 - La bufanda de Miga está unida al carrete de [[La Costurera]].
 - Caminar no lo tensa. Correr y saltar sí: ella lo siente y pasa a Alerta.
