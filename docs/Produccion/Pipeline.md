@@ -3,11 +3,17 @@
 Cómo pasa algo de idea a estar dentro del juego.
 
 ## Flujo
-1. **Referencia** en `docs/Referencias/` (hoja de vistas en PNG y SVG).
-2. **Modelo** en Blender, en `arte-fuente/blender/`.
-3. **Exportar** a FBX hacia `juego/Assets/_Proyecto/Art/Modelos/`.
-4. **Prefab** en Unity, en `Assets/_Proyecto/Prefabs/`.
-5. **Registrar** en [[Inventario]].
+Cada modelo pasa por las 7 etapas de [[Pipeline de arte]], todas en Blender. Cada etapa tiene una lista que hay que cumplir para aprobarla:
+
+1. [[Etapa 1 - Referencias 2D]]
+2. [[Etapa 2 - Blockout]]
+3. [[Etapa 3 - Esculpido]]
+4. [[Etapa 4 - Retopologia y UVs]]
+5. [[Etapa 5 - Bake y texturas]]
+6. [[Etapa 6 - Rig y animacion]]
+7. [[Etapa 7 - Integracion en Unity]]
+
+Los límites de triángulos, texturas y nombres están en [[Estandares de arte]]. Todo asset se registra en [[Inventario]].
 
 ## Usar las hojas de vistas en Blender
 - `miga.blend` y `costurera.blend` ya traen las tres vistas en la colección `Referencias`, con el piso en el origen y a la escala del juego. Se ven en vista ortográfica: frente con `1`, lado con `Ctrl+3`, espalda con `Ctrl+1`.
