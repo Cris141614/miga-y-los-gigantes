@@ -18,3 +18,7 @@ docs/.trash/
 # Temporales
 *.tmp
 *.bak
+
+# Unity crea este .meta porque existe Assets/Plugins/Sentry/, que no se sube (tiene el token de Sentry).
+# shortcut: si algun dia se sube otro plugin a Assets/Plugins/, quitar esta linea y subir el .meta.
+juego/Assets/Plugins.meta
