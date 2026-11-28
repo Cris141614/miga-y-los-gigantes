@@ -12,7 +12,7 @@ namespace Miga.Juego
     public class EntradaMiga : MonoBehaviour
     {
         ControlMiga control;
-        InputAction mover, correr, agachar, saltar, agarrar;
+        InputAction mover, correr, agachar, saltar, agarrar, tapar;
 
         void Awake()
         {
@@ -26,6 +26,7 @@ namespace Miga.Juego
             agachar = Boton("Agachar", "<Keyboard>/leftCtrl", "<Gamepad>/buttonEast");
             saltar = Boton("Saltar", "<Keyboard>/space", "<Gamepad>/buttonSouth");
             agarrar = Boton("Agarrar", "<Keyboard>/e", "<Gamepad>/buttonWest");   // X en Xbox, cuadrado en PlayStation
+            tapar = Boton("Tapar", "<Keyboard>/q", "<Gamepad>/leftTrigger");
         }
 
         static InputAction Boton(string nombre, string teclado, string mando)
@@ -42,6 +43,7 @@ namespace Miga.Juego
             agachar.Enable();
             saltar.Enable();
             agarrar.Enable();
+            tapar.Enable();
         }
 
         void OnDisable()
@@ -51,6 +53,7 @@ namespace Miga.Juego
             agachar.Disable();
             saltar.Disable();
             agarrar.Disable();
+            tapar.Disable();
         }
 
         void OnDestroy()
@@ -60,6 +63,7 @@ namespace Miga.Juego
             agachar.Dispose();
             saltar.Dispose();
             agarrar.Dispose();
+            tapar.Dispose();
         }
 
         void Update()
@@ -70,6 +74,7 @@ namespace Miga.Juego
                 correr = correr.IsPressed(),
                 agachar = agachar.IsPressed(),
                 agarrar = agarrar.IsPressed(),
+                tapar = tapar.IsPressed(),
             };
             if (saltar.WasPressedThisFrame())
                 control.Saltar();
