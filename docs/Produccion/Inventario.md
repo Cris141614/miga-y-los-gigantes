@@ -79,7 +79,7 @@ En personajes, escenario y objetos, `en proceso` dice en qué etapa de [[Pipelin
 | Empujar y jalar | listo (bloques grises) |
 | Cámara lateral | listo (bloques grises) |
 | Luz del frasco | listo (bloques grises; falta que tiemble cerca de un Guardador) |
-| Ruido | pendiente |
+| Ruido | listo (falta tirar objetos, ruido alto) |
 | Estados de La Costurera | pendiente |
 | Hilo rojo | pendiente |
 | Escondites | pendiente |
