@@ -70,6 +70,20 @@ Debajo de telas, dentro de carretes huecos, detrás de objetos. Escondida y con 
 
 El ruido de la máquina de coser encendida tapa los niveles bajo y medio.
 
+### Cómo está hecho
+- `Scripts/Sistemas/Ruido.cs`: cualquiera hace un ruido con `Ruido.Hacer(dónde, nivel)`. Los Guardadores se suscriben a `Ruido.Sono` y deciden según la distancia si lo oyeron (#12).
+- `RuidoMiga.cs`, en `pf_miga`:
+  - un paso cada 0.45 s mientras camina (bajo);
+  - corriendo, un paso cada 0.22 s (medio);
+  - agachada, ninguno;
+  - al saltar y al caer, medio.
+- `MaquinaDeCoser.cs`, en `Maquina_Base` del Nivel 1: mientras el componente está activo, la máquina está encendida y solo se oyen los ruidos altos. La Costurera la apagará al dejar de coser (#12).
+- Pruebas: `Tests/PlayMode/RuidoPruebas.cs`.
+- Pendiente: tirar un objeto (alto). Todavía no se puede tirar nada; cuando exista, usará `Ruido.Hacer(..., NivelRuido.Alto)`.
+
+### Decisiones
+- 2026-11-27: la máquina tapa el ruido en todo el nivel, no solo cerca de ella.
+
 ## Orden para programar
 1. Movimiento y cámara.
 2. Luz del frasco y tapar.
